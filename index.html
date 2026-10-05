@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="si" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>NexiaPro App Store | Official Portal & Driver Apps</title>
+  
+  <meta name="description" content="Official NexiaPro App Store. Download TukTuk Meter Pro, Mother's Assistant, and smart mobility tools. Available as Instant PWA or Direct Android APK.">
+  <meta name="theme-color" content="#0b0f19">
+  <link rel="icon" type="image/png" href="assets/nexiapro-new-logo.png">
+  <link rel="apple-touch-icon" href="assets/nexiapro-new-logo.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN with config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              cyan: '#00f0ff',
+              neon: '#0df',
+              amber: '#f59e0b',
+              amberDark: '#d97706',
+              dark: '#080c14',
+              card: '#0f172a',
+              cardBorder: '#1e293b',
+              glow: 'rgba(0, 240, 255, 0.25)'
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow-amber': 'glowAmber 3s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            glowAmber: {
+              '0%': { boxShadow: '0 0 15px rgba(245, 158, 11, 0.2)' },
+              '100%': { boxShadow: '0 0 35px rgba(245, 158, 11, 0.6)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Firebase Compatibility SDKs for Real-time Cloud Driver Reviews -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Custom CSS for Glows, Glassmorphism, Entrance & Animations -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#070b12] text-slate-100 font-sans antialiased selection:bg-brand-cyan selection:text-black min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Ambient Background Glows -->
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none -z-10"></div>
+  <div class="fixed top-1/3 right-10 w-[30rem] h-[30rem] bg-amber-500/10 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-10 left-1/3 w-80 h-80 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+  <!-- Header / Navigation (Cleaned & Minimal, Dropdown added) -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#080d18]/85 border-b border-slate-800/80 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3.5 group">
+        <div class="relative w-11 h-11 rounded-xl p-[2px] bg-gradient-to-tr from-cyan-400 via-amber-400 to-cyan-500 shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-400/40 transition-all duration-300">
+          <img src="assets/nexiapro-new-logo.png" alt="NexiaPro Official Logo" class="w-full h-full object-cover rounded-[10px] bg-black">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-display font-black text-xl tracking-wider bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">NEXIAPRO</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">STORE</span>
+          </div>
+          <span class="text-[11px] text-slate-400 tracking-wide font-medium" data-i18n="nav_tagline">Mobility & Digital Solutions</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links with Rich Interactive Dropdown -->
+      <nav class="hidden md:flex items-center gap-7">
+        
+        <!-- Apps Catalog Dropdown -->
+        <div class="relative dropdown-wrapper">
+          <button class="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5 py-2 cursor-pointer focus:outline-none">
+            <span data-i18n="nav_apps">Apps Catalog</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform"></i>
+          </button>
+          
+          <div class="dropdown-menu absolute top-full left-0 w-72 rounded-2xl bg-[#0d1527]/95 backdrop-blur-2xl border border-slate-700 shadow-2xl p-2.5 space-y-1 z-50">
+            <!-- App 1: TukTuk Meter -->
+            <a href="#tuktuk-meter" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-800/80 transition-all group">
+              <img src="assets/icon-192.png" alt="TukTuk Meter" class="w-9 h-9 rounded-lg object-cover border border-amber-500/40">
+              <div>
+                <div class="text-xs font-bold text-white group-hover:text-amber-300 flex items-center gap-1.5">
+                  <span>TukTuk Meter Pro</span>
+                  <span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold">v2.4</span>
+                </div>
+                <div class="text-[10px] text-slate-400">GPS Taxi Meter & Billing</div>
+              </div>
+            </a>
+
+            <!-- App 2: Mother's Assistant -->
+            <a href="#mothers-assistant" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-800/80 transition-all group">
+              <img src="assets/mother-icon.png" alt="Mother's Assistant" class="w-9 h-9 rounded-lg object-cover border border-pink-500/40">
+              <div>
+                <div class="text-xs font-bold text-white group-hover:text-pink-300 flex items-center gap-1.5">
+                  <span>Mother's Assistant</span>
+                  <span class="text-[9px] px-1.5 py-0.2 rounded bg-pink-500/20 text-pink-300 font-bold">v1.0</span>
+                </div>
+                <div class="text-[10px] text-slate-400">Maternal & Baby Care</div>
+              </div>
+            </a>
+
+            <!-- App 3: Fuel Logger -->
+            <a href="#featured-apps" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-800/80 transition-all group opacity-75">
+              <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">
+                <i class="fa-solid fa-gas-pump"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-white group-hover:text-emerald-300">Fuel & Mileage Logger</div>
+                <div class="text-[10px] text-slate-400">Analytics (Q4 2026)</div>
+              </div>
+            </a>
+
+            <div class="pt-1.5 border-t border-slate-800">
+              <a href="#featured-apps" class="block text-center py-1.5 text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold">
+                View All Apps in Store &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a href="#gallery" class="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-images text-cyan-400 text-xs"></i>
+          <span>Screenshots</span>
+        </a>
+
+        <a href="#safe-guide" class="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-cyan-400 text-xs"></i>
+          <span data-i18n="nav_install_guide">Install Guide</span>
+        </a>
+
+        <a href="#reviews" class="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors" data-i18n="nav_reviews">Driver Ratings</a>
+        <a href="#faq" class="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <!-- Right Action Items: Clean Language Toggle Only -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher Button -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-xs font-semibold text-slate-200 transition-all cursor-pointer shadow-sm hover:border-cyan-500/50">
+          <i class="fa-solid fa-globe text-cyan-400"></i>
+          <span id="currentLangLabel">සිංහල</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white">
+          <i class="fa-solid fa-bars text-lg" id="mobileMenuIcon"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-800/80 bg-[#080d18]/95 backdrop-blur-xl px-5 py-4 space-y-3">
+      <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">NexiaPro Applications</div>
+      <a href="#tuktuk-meter" onclick="toggleMobileMenu()" class="block text-sm font-medium text-amber-400 py-1">🛺 TukTuk Meter Pro (v2.4)</a>
+      <a href="#mothers-assistant" onclick="toggleMobileMenu()" class="block text-sm font-medium text-pink-400 py-1">🌸 Mother's Assistant (v1.0)</a>
+      <a href="#gallery" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-300 py-1">📸 Screenshot Gallery</a>
+      <a href="#safe-guide" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-300 py-1" data-i18n="nav_install_guide">Install Guide (PWA vs APK)</a>
+      <a href="#reviews" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-300 py-1" data-i18n="nav_reviews">Driver Ratings & Reviews</a>
+      <a href="#faq" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-300 py-1" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          
+          <!-- Pill Tag -->
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 shadow-inner">
+            <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-cyan-300" data-i18n="hero_pill">NexiaPro Official Mobility Store</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-xs font-medium text-slate-400">Sri Lanka 🇱🇰</span>
+          </div>
+
+          <!-- Main Heading -->
+          <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.15]">
+            <span class="text-white" data-i18n="hero_title_1">Smart Solutions for</span><br>
+            <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 bg-clip-text text-transparent" data-i18n="hero_title_highlight">Sri Lankan Drivers</span><br>
+            <span class="text-slate-300 text-3xl sm:text-4xl lg:text-5xl font-extrabold" data-i18n="hero_title_2">& Everyday Needs</span>
+          </h1>
+
+          <!-- Subtitle -->
+          <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal" data-i18n="hero_desc">
+            Download or instantly launch genuine high-precision digital taxi meters, maternal assistance tools, and utility software crafted by NexiaPro. No middlemen, no commissions, 100% offline-ready.
+          </p>
+
+          <!-- Dual Hero Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            
+            <!-- Flagship Instant Launch Button (PWA -> REAL VERCEL URL) -->
+            <a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-display font-extrabold text-base shadow-xl shadow-amber-500/25 hover:shadow-amber-400/40 transform hover:-translate-y-0.5 transition-all">
+              <i class="fa-solid fa-play text-lg"></i>
+              <div class="text-left">
+                <div class="leading-none text-xs uppercase tracking-wider font-semibold opacity-85" data-i18n="hero_btn_pwa_sub">Instant Web App</div>
+                <div class="text-base" data-i18n="hero_btn_pwa">Launch TukTuk Meter</div>
+              </div>
+              <span class="ml-1 px-2 py-0.5 rounded-md bg-black/15 text-[11px] font-bold">No Install</span>
+            </a>
+
+            <!-- Direct APK Download Trigger -->
+            <button onclick="openDownloadModal('tuktuk-meter')" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 hover:border-cyan-500/50 text-white font-display font-bold text-base shadow-lg shadow-black/40 transform hover:-translate-y-0.5 transition-all cursor-pointer">
+              <i class="fa-brands fa-android text-2xl text-emerald-400"></i>
+              <div class="text-left">
+                <div class="leading-none text-xs uppercase tracking-wider text-slate-400" data-i18n="hero_btn_apk_sub">Direct Android APK</div>
+                <div class="text-sm font-semibold text-slate-100" data-i18n="hero_btn_apk">Download App (v2.4)</div>
+              </div>
+            </button>
+
+          </div>
+
+          <!-- Trust Badges Under Hero -->
+          <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-shield-check text-cyan-400 text-sm"></i>
+              <span data-i18n="badge_safe">100% Virus-Free & Safe</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-satellite text-amber-400 text-sm"></i>
+              <span data-i18n="badge_gps">Offline GPS Navigation</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+              <span><strong class="text-white">4.9/5</strong> (<span id="totalDriversCount">1,248+</span> Drivers)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Hero Mockup: Smooth Slide-in from Side Entrance + Alternating Dual Simulator -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
+          
+          <!-- Outer Phone Frame Container with Smooth Slide-in Entrance -->
+          <div id="heroPhoneFrame" class="hero-phone-entrance relative w-full max-w-[340px] rounded-[42px] p-3.5 bg-gradient-to-b from-slate-700 via-slate-900 to-slate-950 border-4 border-slate-700/70 shadow-2xl shadow-cyan-500/20">
+            
+            <!-- Speaker & Camera notch -->
+            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-30 flex items-center justify-center">
+              <div class="w-3 h-3 rounded-full bg-slate-900 border border-slate-800"></div>
+              <div class="w-10 h-1.5 rounded-full bg-slate-900 ml-2"></div>
+            </div>
+
+            <!-- Screen Container -->
+            <div class="relative w-full h-[590px] bg-[#0c1220] rounded-[32px] overflow-hidden border border-slate-800 flex flex-col justify-between p-4 pt-10 transition-colors duration-500" id="heroPhoneScreen">
+              
+              <!-- In-Screen App Switcher Bar (TukTuk vs Mother's Asst) -->
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-2">
+                <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-800">
+                  <button id="simTabTukTuk" onclick="switchHeroSimApp('tuktuk')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500 text-slate-950 shadow transition-all cursor-pointer">
+                    🛺 TukTuk
+                  </button>
+                  <button id="simTabMother" onclick="switchHeroSimApp('mother')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition-all cursor-pointer">
+                    🌸 Mother's
+                  </button>
+                </div>
+                
+                <button id="simAutoRotateBtn" onclick="toggleAutoRotateSim()" class="text-[10px] text-cyan-400 hover:text-cyan-300 font-bold px-2 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/30 flex items-center gap-1 cursor-pointer" title="Auto Switch App every 8s">
+                  <i class="fa-solid fa-rotate text-[9px] animate-spin" style="animation-duration: 6s;"></i>
+                  <span>Auto</span>
+                </button>
+              </div>
+
+              <!-- VIEW 1: TUKTUK METER SIMULATOR -->
+              <div id="heroViewTukTuk" class="space-y-3.5 text-center my-auto transition-all duration-300">
+                <div class="flex items-center justify-between text-left px-1">
+                  <div>
+                    <div class="text-xs font-bold text-white tracking-wide">TUKTUK METER PRO</div>
+                    <div class="text-[9px] text-emerald-400 flex items-center gap-1 font-medium">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> GPS Connected (±3m)
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">LKR</span>
+                </div>
+
+                <!-- Big Fare Display -->
+                <div class="bg-gradient-to-b from-[#131d33] to-[#0c1424] rounded-2xl p-4 border border-amber-500/40 shadow-inner relative overflow-hidden">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Current Trip Fare</div>
+                  <div class="text-4xl font-display font-black text-amber-400 tracking-tight my-1 flex items-center justify-center gap-1">
+                    <span class="text-2xl text-amber-500">Rs.</span>
+                    <span id="heroSimFare">285.00</span>
+                  </div>
+                  <div class="text-[10px] text-slate-400 flex items-center justify-center gap-3">
+                    <span>Base: Rs. 100</span>
+                    <span>•</span>
+                    <span>Rate: Rs. 100/km</span>
+                  </div>
+                </div>
+
+                <!-- Stats Grid inside screen -->
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Distance</div>
+                    <div class="text-xs font-bold text-white mt-0.5"><span id="heroSimKm">2.45</span> km</div>
+                  </div>
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Speed</div>
+                    <div class="text-xs font-bold text-cyan-400 mt-0.5"><span id="heroSimSpeed">34</span> km/h</div>
+                  </div>
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Wait Time</div>
+                    <div class="text-xs font-bold text-amber-300 mt-0.5"><span id="heroSimWait">02:15</span></div>
+                  </div>
+                </div>
+
+                <!-- Status banner -->
+                <div class="p-2 rounded-xl bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-between text-left">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-location-arrow text-cyan-400 text-xs"></i>
+                    <span class="text-[11px] text-cyan-200 font-medium">Live Path Tracing</span>
+                  </div>
+                  <span class="text-[9px] bg-cyan-500 text-black font-extrabold px-1.5 py-0.5 rounded">Active</span>
+                </div>
+              </div>
+
+              <!-- VIEW 2: MOTHER'S ASSISTANT SIMULATOR -->
+              <div id="heroViewMother" class="hidden space-y-3.5 text-center my-auto transition-all duration-300">
+                <div class="flex items-center justify-between text-left px-1">
+                  <div>
+                    <div class="text-xs font-bold text-white tracking-wide">MOTHER'S ASSISTANT</div>
+                    <div class="text-[9px] text-pink-400 flex items-center gap-1 font-medium">
+                      <i class="fa-solid fa-heart text-[8px] animate-ping"></i> Week 24 • Trimester 2
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 border border-pink-500/30">MOH SL</span>
+                </div>
+
+                <!-- Big Pregnancy Card -->
+                <div class="bg-gradient-to-b from-[#241320] to-[#120a11] rounded-2xl p-4 border border-pink-500/40 shadow-inner relative overflow-hidden">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-pink-300">දරුවාගේ වර්ධනය</div>
+                  <div class="text-2xl font-display font-black text-pink-400 tracking-tight my-1">
+                    සති 24 <span class="text-base text-slate-300 font-semibold">(මාස 6)</span>
+                  </div>
+                  <div class="text-[11px] text-slate-300 flex items-center justify-center gap-2 mt-1">
+                    <span>පැපොල් ගෙඩියක ප්‍රමාණය (30cm)</span>
+                  </div>
+                </div>
+
+                <!-- Stats Grid inside screen -->
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Heartbeat</div>
+                    <div class="text-xs font-bold text-rose-400 mt-0.5">142 bpm</div>
+                  </div>
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Weight</div>
+                    <div class="text-xs font-bold text-white mt-0.5">600 g</div>
+                  </div>
+                  <div class="bg-slate-900/90 rounded-xl p-2 border border-slate-800 text-center">
+                    <div class="text-[9px] text-slate-400 uppercase font-medium">Clinic</div>
+                    <div class="text-xs font-bold text-pink-300 mt-0.5">දින 4කින්</div>
+                  </div>
+                </div>
+
+                <!-- Daily Tip banner -->
+                <div class="p-2.5 rounded-xl bg-pink-950/40 border border-pink-500/30 text-left">
+                  <div class="text-[10px] font-bold text-pink-300 mb-0.5">අද දවසේ සෞඛ්‍ය උපදෙස:</div>
+                  <div class="text-[10px] text-slate-300 leading-tight">යකඩ සහ කැල්සියම් බහුල ආහාර වේලකට එක්කර ගන්න.</div>
+                </div>
+              </div>
+
+              <!-- Interactive Controls inside Phone Mockup -->
+              <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="simToggleBtn" onclick="toggleHeroSim()" class="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer">
+                    <i class="fa-solid fa-pause text-xs" id="simToggleIcon"></i>
+                    <span id="simToggleLabel">Pause</span>
+                  </button>
+                  <a id="simFullAppLink" href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-700 transition-all">
+                    <i class="fa-solid fa-up-right-from-square text-xs text-cyan-400"></i>
+                    <span id="simFullAppLabel">Full App</span>
+                  </a>
+                </div>
+                <div class="text-[10px] text-center text-slate-400">Live Dual Interactive Simulation Engine</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- LANKAQR Floating Badge (Positioned cleanly & fully visible without clipping) -->
+          <div class="mt-4 flex items-center justify-center gap-3 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 px-4 py-2.5 rounded-2xl shadow-xl z-20">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>LANKAQR Built-in</span>
+                <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold">100% Cashless</span>
+              </div>
+              <div class="text-[10px] text-slate-400">Direct mobile passenger payments for any bank app</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Dedicated Screenshot Gallery Section (TukTuk Meter & Mother's Assistant) -->
+  <section id="gallery" class="py-20 bg-gradient-to-b from-[#090e1a] via-[#0c1424] to-[#070b12] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2">INTERFACE SHOWCASE</h2>
+          <p class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">App Screenshots & Preview</p>
+          <p class="text-slate-400 text-sm mt-1">High-resolution screens from TukTuk Meter Pro and Mother's Assistant.</p>
+        </div>
+
+        <!-- Gallery Switcher Tabs -->
+        <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 self-start md:self-auto">
+          <button id="galleryTabTukTuk" onclick="switchGallery('tuktuk')" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all cursor-pointer">
+            🛺 TukTuk Meter Pro (5)
+          </button>
+          <button id="galleryTabMother" onclick="switchGallery('mother')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all cursor-pointer">
+            🌸 Mother's Assistant (5)
+          </button>
+        </div>
+      </div>
+
+      <!-- TUKTUK METER SCREENSHOTS GRID -->
+      <div id="galleryTukTukGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        
+        <div onclick="openLightbox('assets/screenshots/tuktuk/meter-main.png', 'TukTuk Meter - Live GPS Fare & Speed Screen')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/tuktuk/meter-main.png" alt="TukTuk Meter Live Display" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">1. Live Meter Display</div>
+          <div class="text-[10px] text-amber-400">GPS Fare & Speed</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/tuktuk/meter-receipt.png', 'TukTuk Meter - Digital Receipt & LANKAQR Bill')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/tuktuk/meter-receipt.png" alt="Digital Receipt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">2. Digital Bill & QR</div>
+          <div class="text-[10px] text-emerald-400">Cashless & WhatsApp</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/tuktuk/meter-settings.png', 'TukTuk Meter - Custom Fare Configuration')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/tuktuk/meter-settings.png" alt="Fare Settings" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">3. Fare Rate Settings</div>
+          <div class="text-[10px] text-cyan-400">Base, Km & Waiting</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/tuktuk/meter-map.png', 'TukTuk Meter - Live Path & Route Tracing Map')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/tuktuk/meter-map.png" alt="Live Route Map" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">4. Live Route Map</div>
+          <div class="text-[10px] text-blue-400">Path Tracing Engine</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/tuktuk/meter-history.png', 'TukTuk Meter - Daily Trip History & Summary')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/tuktuk/meter-history.png" alt="Daily History" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">5. Daily Trip Summary</div>
+          <div class="text-[10px] text-purple-400">Earnings & Mileage</div>
+        </div>
+
+      </div>
+
+      <!-- MOTHER'S ASSISTANT SCREENSHOTS GRID (Initially hidden, toggled via JS) -->
+      <div id="galleryMotherGrid" class="hidden grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        
+        <div onclick="openLightbox('assets/screenshots/mother/mother-main.png', 'Mother Assistant - Daily Maternal Health Dashboard')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/mother/mother-main.png" alt="Mother Assistant Home" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">1. Maternal Dashboard</div>
+          <div class="text-[10px] text-pink-400">Daily Health Advice</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/mother/mother-tracker.png', 'Mother Assistant - Week by Week Baby Growth Tracker')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/mother/mother-tracker.png" alt="Pregnancy Tracker" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">2. Pregnancy Tracker</div>
+          <div class="text-[10px] text-rose-400">Week-by-Week Growth</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/mother/mother-clinic.png', 'Mother Assistant - MOH Clinic Card Abbreviations Dictionary')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/mother/mother-clinic.png" alt="Clinic Card Guide" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">3. Clinic Card Terms</div>
+          <div class="text-[10px] text-cyan-400">MOH Guide in Sinhala</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/mother/mother-names.png', 'Mother Assistant - Curated Sinhala Baby Names')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/mother/mother-names.png" alt="Sinhala Baby Names" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">4. Sinhala Baby Names</div>
+          <div class="text-[10px] text-amber-400">Names with Meanings</div>
+        </div>
+
+        <div onclick="openLightbox('assets/screenshots/mother/mother-vaccine.png', 'Mother Assistant - Child MOH Vaccine Calendar')" class="ss-thumbnail cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 p-2 group">
+          <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black">
+            <img src="assets/screenshots/mother/mother-vaccine.png" alt="Vaccine Schedule" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="text-[11px] font-bold text-white mt-2 truncate">5. Vaccine Calendar</div>
+          <div class="text-[10px] text-emerald-400">Immunization Chart</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PWA vs APK Comparison & Safe Install Announcement -->
+  <section id="safe-guide" class="py-14 bg-gradient-to-b from-[#070b12] to-[#0d1424] border-y border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2" data-i18n="install_badge">FLEXIBLE ACCESS OPTIONS</h2>
+        <p class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight" data-i18n="install_title">Two Ways to Run NexiaPro Apps</p>
+        <p class="text-slate-400 text-sm sm:text-base mt-2" data-i18n="install_desc">Choose between instant web execution or native Android APK. Both deliver high accuracy and zero subscriptions.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        
+        <!-- OPTION A: Web App / PWA -->
+        <div class="relative rounded-3xl p-7 sm:p-8 bg-slate-900/80 border-2 border-amber-500/40 hover:border-amber-400 transition-all duration-300 flex flex-col justify-between shadow-xl shadow-amber-500/5 group">
+          <div class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider shadow-md">
+            Recommended for Ease
+          </div>
+
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Option A</span>
+                <h3 class="font-display font-extrabold text-2xl text-white">Use Web App / PWA</h3>
+                <p class="text-xs text-slate-400">Zero installation required • Instant start</p>
+              </div>
+            </div>
+
+            <ul class="space-y-3.5 text-sm text-slate-300 my-6">
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-white" data-i18n="pwa_feat_1_title">No Android Warning:</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="pwa_feat_1_desc">Opens straight in Chrome, Brave, or Samsung Internet without any security alerts.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-white" data-i18n="pwa_feat_2_title">Add to Home Screen (1-Tap):</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="pwa_feat_2_desc">Works exactly like a native app icon on your phone desktop.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-white" data-i18n="pwa_feat_3_title">Automatic Updates:</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="pwa_feat_3_desc">Always runs the latest fare rules and meter features with no manual APK downloads.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-slate-800">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-1 py-3.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-bold text-center text-sm shadow-lg shadow-amber-500/20 transition-all">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>
+                <span data-i18n="btn_launch_now">Launch Web App Now</span>
+              </a>
+              <button onclick="openPwaGuideModal()" class="py-3.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all cursor-pointer">
+                <i class="fa-solid fa-book-open mr-1.5 text-amber-400"></i>
+                <span data-i18n="btn_how_to_add">How to Add to Home</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTION B: Android APK -->
+        <div class="relative rounded-3xl p-7 sm:p-8 bg-slate-900/80 border-2 border-slate-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col justify-between shadow-xl group">
+          <div class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/40 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+            Standalone Package
+          </div>
+
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-105 transition-transform">
+                <i class="fa-brands fa-android"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Option B</span>
+                <h3 class="font-display font-extrabold text-2xl text-white">Download Android APK</h3>
+                <p class="text-xs text-slate-400">Direct Native Installation (.apk file)</p>
+              </div>
+            </div>
+
+            <ul class="space-y-3.5 text-sm text-slate-300 my-6">
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-check text-cyan-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-white" data-i18n="apk_feat_1_title">Offline Native Packaging:</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="apk_feat_1_desc">Installed as an independent Android app on your phone storage.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-check text-cyan-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-white" data-i18n="apk_feat_2_title">Screen Lock Protection:</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="apk_feat_2_desc">Full OS-level wake lock so the meter never sleeps during rides.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-info text-amber-400 text-base mt-0.5"></i>
+                <div>
+                  <strong class="text-amber-300" data-i18n="apk_feat_3_title">About Android Warnings:</strong>
+                  <span class="text-slate-400 text-xs block" data-i18n="apk_feat_3_desc">Android shows "File might be harmful" because it's not downloaded from Play Store. It is 100% verified and safe to install.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-slate-800">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button onclick="openDownloadModal('tuktuk-meter')" class="flex-1 py-3.5 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-display font-bold text-center text-sm shadow-lg shadow-cyan-500/20 transition-all cursor-pointer">
+                <i class="fa-solid fa-download mr-2"></i>
+                <span data-i18n="btn_download_apk">Download APK (v2.4)</span>
+              </button>
+              <button onclick="openApkSafetyModal()" class="py-3.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-semibold border border-amber-500/30 transition-all cursor-pointer">
+                <i class="fa-solid fa-shield-halved mr-1.5"></i>
+                <span data-i18n="btn_warning_help">Warning Help?</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Featured Apps Catalog Section -->
+  <section id="featured-apps" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2" data-i18n="catalog_badge">OFFICIAL ECOSYSTEM</h2>
+        <p class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight" data-i18n="catalog_title">NexiaPro App Catalog</p>
+        <p class="text-slate-400 text-sm mt-1" data-i18n="catalog_desc">All software built and maintained by NexiaPro Mobility Labs.</p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex items-center gap-2 p-1.5 rounded-xl bg-slate-900 border border-slate-800 self-start md:self-auto overflow-x-auto">
+        <button onclick="filterApps('all')" class="cat-tab px-4 py-2 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition-all cursor-pointer" data-cat="all">All Apps (3)</button>
+        <button onclick="filterApps('mobility')" class="cat-tab px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all cursor-pointer" data-cat="mobility">Mobility</button>
+        <button onclick="filterApps('health')" class="cat-tab px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all cursor-pointer" data-cat="health">Health & Family</button>
+        <button onclick="filterApps('upcoming')" class="cat-tab px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all cursor-pointer" data-cat="upcoming">Upcoming</button>
+      </div>
+    </div>
+
+    <!-- App Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- APP 1: TukTuk Meter Pro (FLAGSHIP) -->
+      <div id="tuktuk-meter" class="app-card relative rounded-3xl p-6 bg-slate-900/90 border border-amber-500/40 hover:border-amber-400 shadow-xl shadow-amber-500/5 transition-all duration-300 flex flex-col justify-between group" data-category="mobility">
+        
+        <div>
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="w-16 h-16 rounded-2xl p-1 bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/20">
+              <img src="assets/icon-192.png" alt="TukTuk Meter Pro" class="w-full h-full object-cover rounded-xl bg-slate-950">
+            </div>
+            <div class="flex flex-col items-end">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold">
+                <i class="fa-solid fa-badge-check"></i> Official Flagship
+              </span>
+              <span class="text-[11px] text-slate-400 mt-1">v2.4 Production</span>
+            </div>
+          </div>
+
+          <h3 class="font-display font-extrabold text-2xl text-white group-hover:text-amber-300 transition-colors">TukTuk Meter Pro</h3>
+          <p class="text-xs text-amber-400/90 font-medium mt-0.5" data-i18n="app1_subtitle">GPS Digital Taxi Meter & Passenger Billing</p>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed" data-i18n="app1_desc">
+            Designed for Sri Lankan three-wheelers & taxis. Ultra-accurate GPS distance & waiting fare calculations, LANKAQR code generator, speech guidance, and digital receipts.
+          </p>
+
+          <div class="mt-4 p-3 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="flex text-amber-400 text-sm">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star-half-stroke"></i>
+              </div>
+              <span class="font-bold text-sm text-white" id="app1RatingVal">4.9</span>
+            </div>
+            <button onclick="openRateModal('tuktuk-meter')" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold underline cursor-pointer" data-i18n="rate_btn">
+              Rate this App ⭐
+            </button>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Offline GPS</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">LANKAQR</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Night Surcharge</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Sinhala Voice</span>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-6 border-t border-slate-800 space-y-2.5">
+          <div class="grid grid-cols-2 gap-2">
+            <a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 transition-all">
+              <i class="fa-solid fa-bolt"></i>
+              <span data-i18n="btn_instant_run">Run PWA</span>
+            </a>
+            <button onclick="openDownloadModal('tuktuk-meter')" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <i class="fa-brands fa-android text-emerald-400"></i>
+              <span>Get APK</span>
+            </button>
+          </div>
+
+          <button onclick="switchGallery('tuktuk'); document.getElementById('gallery').scrollIntoView({behavior:'smooth'});" class="w-full py-2 px-3 rounded-xl bg-slate-950/70 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium text-center transition-all cursor-pointer flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-images text-cyan-400 text-xs"></i>
+            <span>View 5 App Screenshots</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- APP 2: Mother's Assistant -->
+      <div id="mothers-assistant" class="app-card relative rounded-3xl p-6 bg-slate-900/90 border border-pink-500/40 hover:border-pink-400 shadow-xl shadow-pink-500/5 transition-all duration-300 flex flex-col justify-between group" data-category="health">
+        
+        <div>
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="w-16 h-16 rounded-2xl p-1 bg-gradient-to-br from-pink-400 via-rose-400 to-pink-600 shadow-lg shadow-pink-500/20">
+              <img src="assets/mother-icon.png" alt="Mother's Assistant" class="w-full h-full object-cover rounded-xl bg-slate-950">
+            </div>
+            <div class="flex flex-col items-end">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-[11px] font-bold">
+                <i class="fa-solid fa-heart"></i> Health & Family
+              </span>
+              <span class="text-[11px] text-slate-400 mt-1">v1.0 Production</span>
+            </div>
+          </div>
+
+          <h3 class="font-display font-extrabold text-2xl text-white group-hover:text-pink-300 transition-colors">Mother's Assistant</h3>
+          <p class="text-xs text-pink-400/90 font-medium mt-0.5">අම්මගේ අත්උදව්ව • Maternal Care Companion</p>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+            ගැබ්ගත් මුල්ම දින සිට දරු ප්‍රසූතිය දක්වා ඔබට අවශ්‍ය සියලුම සෞඛ්‍ය උපදෙස්, MOH ළදරු බර මාපක, එන්නත් දින දර්ශනය සහ ලස්සන සිංහල ළදරු නම් එකම තැනකින්.
+          </p>
+
+          <div class="mt-4 p-3 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="flex text-amber-400 text-sm">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <span class="font-bold text-sm text-white">5.0</span>
+            </div>
+            <span class="text-xs text-pink-300 font-medium">Verified by Mothers</span>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Pregnancy Tracker</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Sinhala Names</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Vaccine Chart</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">MOH Card Guide</span>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-6 border-t border-slate-800 space-y-2.5">
+          <div class="grid grid-cols-2 gap-2">
+            <a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="py-2.5 px-3 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 shadow-md shadow-pink-500/20 transition-all">
+              <i class="fa-brands fa-android"></i>
+              <span>Get APK (4 MB)</span>
+            </a>
+            <button onclick="openMotherDetailsModal()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <i class="fa-solid fa-circle-info text-pink-400"></i>
+              <span>Overview</span>
+            </button>
+          </div>
+
+          <button onclick="switchGallery('mother'); document.getElementById('gallery').scrollIntoView({behavior:'smooth'});" class="w-full py-2 px-3 rounded-xl bg-slate-950/70 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium text-center transition-all cursor-pointer flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-images text-pink-400 text-xs"></i>
+            <span>View 5 App Screenshots</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- APP 3: Fuel Logger -->
+      <div class="app-card relative rounded-3xl p-6 bg-slate-900/60 border border-slate-800/80 hover:border-slate-700 shadow-xl transition-all duration-300 flex flex-col justify-between" data-category="upcoming">
+        <div>
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="w-16 h-16 rounded-2xl p-1 bg-gradient-to-br from-emerald-500 to-teal-700 shadow-lg shadow-emerald-500/10 flex items-center justify-center text-white text-3xl">
+              <i class="fa-solid fa-gas-pump"></i>
+            </div>
+            <div class="flex flex-col items-end">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-[11px] font-bold">
+                <i class="fa-solid fa-clock"></i> In Development
+              </span>
+              <span class="text-[11px] text-slate-500 mt-1">Expected Q4 2026</span>
+            </div>
+          </div>
+
+          <h3 class="font-display font-extrabold text-2xl text-white">Fuel & Speedo Logger</h3>
+          <p class="text-xs text-emerald-400/90 font-medium mt-0.5" data-i18n="app3_subtitle">Mileage & Petrol Cost Analytics</p>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed" data-i18n="app3_desc">
+            Calculate your actual km/liter fuel consumption, track fuel expense vs daily ride earnings, and receive maintenance alerts for 3-wheelers and motorcycles.
+          </p>
+
+          <div class="mt-4 p-3 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div class="text-xs text-slate-400">Beta Testing Soon</div>
+            <span class="text-xs text-emerald-400 font-bold">Free for Drivers</span>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-6 border-t border-slate-800">
+          <button onclick="alert('Thank you! You will be notified when the Fuel Logger beta opens.')" class="w-full py-3 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-display font-bold text-xs flex items-center justify-center gap-2 border border-slate-700 cursor-pointer transition-all">
+            <i class="fa-solid fa-bell text-amber-400"></i>
+            <span data-i18n="btn_notify_me">Notify Me on Release</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Interactive App Demo & Meter Playground -->
+  <section class="py-16 bg-gradient-to-b from-[#070b12] via-[#0b101d] to-[#070b12] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2" data-i18n="demo_badge">HANDS-ON PREVIEW</h2>
+        <p class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight" data-i18n="demo_title">Try the Interactive Meter Demo</p>
+        <p class="text-slate-400 text-sm mt-2" data-i18n="demo_desc">Experience how smoothly the meter counts kilometers, calculates waiting time, and generates receipts right here.</p>
+      </div>
+
+      <div class="max-w-4xl mx-auto rounded-3xl bg-[#0c1424] border-2 border-slate-800 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          
+          <div class="md:col-span-6 space-y-6">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
+              <h3 class="font-display font-bold text-xl text-white" data-i18n="sim_controls_title">Meter Simulator Console</h3>
+            </div>
+            
+            <p class="text-xs text-slate-400 leading-relaxed" data-i18n="sim_controls_desc">
+              Click Start to simulate a 3-wheeler ride through Colombo. Watch the dynamic fare calculation engine update in real time based on Sri Lankan taxi fare rules.
+            </p>
+
+            <div class="flex flex-wrap gap-3">
+              <button id="simPlayBtn" onclick="togglePlaygroundSim()" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer transition-all">
+                <i class="fa-solid fa-play" id="simPlayIcon"></i>
+                <span id="simPlayText">Start Simulated Ride</span>
+              </button>
+              <button onclick="resetPlaygroundSim()" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs flex items-center gap-2 border border-slate-700 cursor-pointer transition-all">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <div class="space-y-4 pt-4 border-t border-slate-800">
+              <div>
+                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  <span>Simulated Speed (km/h)</span>
+                  <span id="speedValLabel" class="text-cyan-400 font-bold">36 km/h</span>
+                </div>
+                <input type="range" id="speedSlider" min="0" max="60" value="36" oninput="updateSimSpeed(this.value)" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-moon text-amber-400 text-sm"></i>
+                  <div>
+                    <div class="text-xs font-bold text-white">Night Fare (+15%)</div>
+                    <div class="text-[10px] text-slate-400">10:00 PM – 05:00 AM Rate</div>
+                  </div>
+                </div>
+                <input type="checkbox" id="nightFareCheck" onchange="toggleNightFare(this.checked)" class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="md:col-span-6">
+            <div class="rounded-3xl bg-[#080d18] border-2 border-amber-500/50 p-6 shadow-2xl relative">
+              
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span class="font-display font-black text-sm text-white tracking-wider">TUKTUK METER PRO</span>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">LKR</span>
+              </div>
+
+              <div class="text-center py-4 bg-gradient-to-b from-slate-900 to-[#070b14] rounded-2xl border border-slate-800 mb-4">
+                <div class="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">Total Fare</div>
+                <div class="text-5xl font-display font-black text-amber-400 tracking-tight my-1">
+                  <span class="text-3xl text-amber-500">Rs.</span>
+                  <span id="playFare">100.00</span>
+                </div>
+                <div id="nightStatusBadge" class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Standard Day Fare</div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2.5 mb-4">
+                <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800 text-center">
+                  <div class="text-[10px] text-slate-400 uppercase font-medium">Distance</div>
+                  <div class="text-base font-bold text-white mt-0.5"><span id="playKm">0.00</span> km</div>
+                </div>
+                <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800 text-center">
+                  <div class="text-[10px] text-slate-400 uppercase font-medium">Speed</div>
+                  <div class="text-base font-bold text-cyan-400 mt-0.5"><span id="playSpeed">0</span> km/h</div>
+                </div>
+                <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800 text-center">
+                  <div class="text-[10px] text-slate-400 uppercase font-medium">Wait Time</div>
+                  <div class="text-base font-bold text-amber-300 mt-0.5"><span id="playWait">00:00</span></div>
+                </div>
+              </div>
+
+              <div class="pt-2 flex items-center justify-between text-xs">
+                <span class="text-slate-500 text-[11px]">Base: Rs. 100 • Km: Rs. 100</span>
+                <button onclick="simulateReceipt()" class="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 text-xs font-bold cursor-pointer transition-all">
+                  <i class="fa-solid fa-receipt mr-1"></i> Sample Bill
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Driver Reviews & Recommendation Showcase (Powered by Real-time Firebase) -->
+  <section id="reviews" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400" data-i18n="reviews_badge">COMMUNITY REPUTATION</h2>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live Firebase Cloud Sync
+          </span>
+        </div>
+        <p class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight" data-i18n="reviews_title">Driver Reviews & Ratings</p>
+        <p class="text-slate-400 text-sm mt-1" data-i18n="reviews_desc">Feedback from three-wheeler captains and taxi drivers across Sri Lanka.</p>
+      </div>
+
+      <button onclick="openRateModal('tuktuk-meter')" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-extrabold text-xs shadow-lg shadow-amber-500/20 cursor-pointer transition-all self-start md:self-auto">
+        <i class="fa-solid fa-pen-nib"></i>
+        <span data-i18n="leave_review_btn">Leave a Driver Review</span>
+      </button>
+    </div>
+
+    <div class="mb-10 p-6 rounded-3xl bg-slate-900/80 border border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
+      <div>
+        <div class="text-4xl font-display font-black text-amber-400" id="summaryAvgScore">4.9<span class="text-2xl text-slate-500">/5</span></div>
+        <div class="flex justify-center text-amber-400 text-sm my-1">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+        </div>
+        <div class="text-xs text-slate-400">Overall Satisfaction</div>
+      </div>
+      <div>
+        <div class="text-3xl font-display font-bold text-white" id="summaryTotalReviews">1,248+</div>
+        <div class="text-xs text-cyan-400 font-semibold mt-1">Verified Drivers</div>
+        <div class="text-xs text-slate-400">Island-wide Coverage</div>
+      </div>
+      <div>
+        <div class="text-3xl font-display font-bold text-emerald-400">100%</div>
+        <div class="text-xs text-slate-200 font-semibold mt-1">Accuracy Guarantee</div>
+        <div class="text-xs text-slate-400">GPS Drift Filtered (&lt; 30m)</div>
+      </div>
+      <div>
+        <div class="text-3xl font-display font-bold text-cyan-300">0%</div>
+        <div class="text-xs text-slate-200 font-semibold mt-1">Zero Commission</div>
+        <div class="text-xs text-slate-400">Keep 100% of your ride fare</div>
+      </div>
+    </div>
+
+    <div id="reviewsList" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-8 text-center col-span-3 text-slate-400 text-xs">
+        <i class="fa-solid fa-spinner fa-spin text-amber-400 mr-2"></i> Loading driver ratings from cloud...
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Frequently Asked Questions (FAQ) -->
+  <section id="faq" class="py-16 bg-[#0a0f1c] border-t border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2" data-i18n="faq_badge">CLEAR ANSWERS</h2>
+        <p class="font-display font-black text-3xl text-white tracking-tight" data-i18n="faq_title">Frequently Asked Questions</p>
+        <p class="text-slate-400 text-sm mt-1" data-i18n="faq_desc">Everything you need to know about NexiaPro apps, security, and usage.</p>
+      </div>
+
+      <div class="space-y-4">
+        
+        <div class="faq-item rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 font-display font-bold text-sm text-white cursor-pointer hover:text-cyan-400">
+            <span data-i18n="faq1_q">Android එකෙන් APK download කරද්දී "File might be harmful" කියලා එන්නේ ඇයි?</span>
+            <i class="fa-solid fa-chevron-down text-slate-500 transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3" data-i18n="faq1_a">
+            Google Play Store එකෙන් පිටතින් බාගත කරන ඕනෑම .apk ගොනුවකට Android මෙහෙයුම් පද්ධතිය ස්වයංක්‍රීයව මෙම අනතුරු ඇඟවීම පෙන්වයි. මෙය ඔබගේ ආරක්ෂාව වෙනුවෙන් Google විසින් දමා ඇති සාමාන්‍ය පණිවිඩයකි. NexiaPro Apps 100% Virus-free සහ ආරක්ෂිත බව සහතික කෙරේ. ඔබට කිසිදු සැකයකින් තොරව "Download anyway" ක්ලික් කර Install කරගත හැක.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 font-display font-bold text-sm text-white cursor-pointer hover:text-cyan-400">
+            <span data-i18n="faq2_q">PWA (Web App) සහ APK අතර වෙනස කුමක්ද? හොඳම කුමක්ද?</span>
+            <i class="fa-solid fa-chevron-down text-slate-500 transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3" data-i18n="faq2_a">
+            <strong>PWA (Web App):</strong> Browser එකෙන්ම run වන නිසා කිසිදු download warning එකක් එන්නේ නැත. Chrome හි "Add to Home Screen" තේරූ විට සාමාන්‍ය app එකක් මෙන් ක්‍රියා කරයි. Updates ස්වයංක්‍රීයව ලැබේ.<br><br>
+            <strong>APK (Native App):</strong> Android package එකක් ලෙස phone එකේ ස්ථාපනය වේ. දෙකෙහිම GPS නිරවද්‍යතාවය සහ පහසුකම් 100% සමානය. පහසුම ක්‍රමය PWA ක්‍රමයයි.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 font-display font-bold text-sm text-white cursor-pointer hover:text-cyan-400">
+            <span data-i18n="faq3_q">මේ සඳහා Internet (Data) නිතරම අවශ්‍ය වෙනවාද?</span>
+            <i class="fa-solid fa-chevron-down text-slate-500 transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3" data-i18n="faq3_a">
+            නැත. TukTuk Meter Pro ක්‍රියාකරන්නේ ඔබගේ දුරකථනයේ සෘජු චන්ද්‍රිකා GPS (Hardware Location Sensor) මගිනි. එබැවින් Data නැති වුවද කිලෝමීටර් ගණනය කිරීම 100% සාර්ථකව සිදු වේ. (නමුත් සිතියම් බැලීමට සහ WhatsApp bill යැවීමට පමණක් data අවශ්‍ය වේ).
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 font-display font-bold text-sm text-white cursor-pointer hover:text-cyan-400">
+            <span data-i18n="faq4_q">ගාස්තු (Rates - Base Fare, Per Km) වෙනස් කරගන්නේ කෙසේද?</span>
+            <i class="fa-solid fa-chevron-down text-slate-500 transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3" data-i18n="faq4_a">
+            App එකෙහි ඇති Settings (Gear icon) එකට ගොස් ඔබගේ ප්‍රදේශයේ හෝ සංගමයේ නියමිත ගාස්තු (උදා: මුල් කිලෝමීටරය, ඉදිරි කිලෝමීටර් ගාස්තුව, වේටින් ගාස්තුව) ඔබට අවශ්‍ය පරිදි ඇතුළත් කර Save කරගත හැක.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer (With Support Email & WhatsApp) -->
+  <footer class="mt-auto bg-[#05080e] border-t border-slate-800/80 pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        
+        <div class="space-y-4 md:col-span-1">
+          <div class="flex items-center gap-3">
+            <img src="assets/nexiapro-new-logo.png" alt="NexiaPro" class="w-9 h-9 rounded-lg object-cover">
+            <span class="font-display font-black text-xl text-white tracking-wider">NEXIAPRO</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Independent Sri Lankan technology brand developing high-precision transport, family care & utility software for smartphones.
+          </p>
+          <div class="text-[11px] text-slate-500">Made with pride in Sri Lanka 🇱🇰</div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Products</div>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors">TukTuk Meter Pro (Web PWA)</a></li>
+            <li><button onclick="openDownloadModal('tuktuk-meter')" class="hover:text-cyan-400 transition-colors cursor-pointer text-left">Android APK Release</button></li>
+            <li><a href="#mothers-assistant" class="hover:text-pink-400 transition-colors">Mother's Assistant App</a></li>
+            <li><a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="hover:text-pink-400 transition-colors">Download Mother's Asst APK</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Driver Guides</div>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><button onclick="openPwaGuideModal()" class="hover:text-amber-400 transition-colors cursor-pointer text-left">Add to Home Screen (Guide)</button></li>
+            <li><button onclick="openApkSafetyModal()" class="hover:text-cyan-400 transition-colors cursor-pointer text-left">Why Android Warning Shows?</button></li>
+            <li><a href="#gallery" class="hover:text-cyan-400 transition-colors">App Screenshot Gallery</a></li>
+            <li><a href="#reviews" class="hover:text-slate-200 transition-colors">Driver Ratings & Community</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Official Support</div>
+          <p class="text-xs text-slate-400">Questions, custom fare rates, or association support? Contact our official desk:</p>
+          <div class="space-y-2 pt-1">
+            <a href="mailto:supportnexiapro@gmail.com" class="flex items-center gap-2 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+              <i class="fa-solid fa-envelope"></i>
+              <span>supportnexiapro@gmail.com</span>
+            </a>
+            <a href="https://wa.me/94770000000" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold hover:bg-emerald-600/30 transition-all">
+              <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+        <div>&copy; 2026 NexiaPro™. All rights reserved.</div>
+        <div class="flex items-center gap-4">
+          <a href="mailto:supportnexiapro@gmail.com" class="hover:text-slate-400">supportnexiapro@gmail.com</a>
+          <span>•</span>
+          <span>Privacy Friendly</span>
+          <span>•</span>
+          <span>Zero User Tracking</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS & POPUPS ==================== -->
+
+  <!-- Lightbox Modal for Screenshots -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-4">
+    <button onclick="closeModal('lightboxModal')" class="absolute top-5 right-5 text-white/70 hover:text-white text-2xl cursor-pointer z-50 p-2">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-4xl w-full max-h-[92vh] flex flex-col items-center justify-center relative animate-scaleUp">
+      <img id="lightboxImg" src="" alt="Screenshot Full View" class="max-h-[80vh] w-auto rounded-2xl shadow-2xl border border-slate-700 object-contain">
+      <div id="lightboxCaption" class="text-xs sm:text-sm font-semibold text-slate-300 mt-4 text-center px-4"></div>
+    </div>
+  </div>
+
+  <!-- Download Modal -->
+  <div id="downloadModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0f172a] border border-slate-700 max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp">
+      <button onclick="closeModal('downloadModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5">
+        <img src="assets/icon-192.png" alt="App Icon" class="w-12 h-12 rounded-xl object-cover border border-amber-500/40">
+        <div>
+          <h3 class="font-display font-extrabold text-xl text-white">TukTuk Meter Pro</h3>
+          <p class="text-xs text-slate-400">Choose your preferred access method</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 my-6">
+        
+        <a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/40 hover:bg-amber-500/20 transition-all flex items-center justify-between group cursor-pointer block">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-lg font-bold">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white group-hover:text-amber-300">Run as Web App (PWA)</div>
+              <div class="text-xs text-slate-400">Instant launch • No warning • Automatic updates</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right text-amber-400 text-sm"></i>
+        </a>
+
+        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-700 hover:border-cyan-500/50 transition-all space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center text-lg font-bold">
+                <i class="fa-brands fa-android"></i>
+              </div>
+              <div>
+                <div class="text-sm font-bold text-white">Download Android APK (v2.4)</div>
+                <div class="text-xs text-slate-400">Official Android Package Install • 24.3 MB</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 flex gap-2">
+            <a href="assets/TukTuk_Meter_Pro_v2.4.apk" download="TukTuk_Meter_Pro_v2.4.apk" class="flex-1 py-2.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs text-center transition-all flex items-center justify-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-download"></i> Start Download (24.3 MB)
+            </a>
+            <button onclick="openApkSafetyModal()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-semibold border border-amber-500/30 cursor-pointer">
+              Warning Help?
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2.5">
+        <i class="fa-solid fa-shield-halved text-cyan-400 text-base"></i>
+        <span>Both options contain identical meter algorithms and zero advertisements.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- APK Safety Modal -->
+  <div id="apkSafetyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0e1628] border-2 border-amber-500/50 max-w-xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('apkSafetyModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3.5 mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-2xl">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <h3 class="font-display font-black text-xl text-white">"File might be harmful" Warning?</h3>
+          <p class="text-xs text-amber-300 font-medium">බිය නොවන්න! මෙය සාමාන්‍ය Google ආරක්ෂක පණිවිඩයකි.</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+          <strong class="text-white text-sm block mb-1">මේ Warning එක එන්නේ ඇයි?</strong>
+          Google Play Store එකෙන් පිටතින් (Chrome, Browser ආදියෙන්) බාගත කරන ඕනෑම ගොනුවකට Android විසින් මෙම පණිවිඩය ස්වයංක්‍රීයව පෙන්වනු ලබයි. එය ඔබගේ දුරකථනය ආරක්ෂා කිරීමට Google දමා ඇති සාමාන්‍ය ක්‍රමවේදයකි. NexiaPro Apps 100% Virus-free සහ ආරක්ෂිත බව සහතික කෙරේ. ඔබට කිසිදු සැකයකින් තොරව "Download anyway" ක්ලික් කර Install කරගත හැක.
+        </div>
+
+        <div class="font-bold text-white text-sm pt-2">ස්ථාපනය කරගන්නා සරල පියවර 3:</div>
+
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">1</span>
+            <div>
+              <div class="font-bold text-slate-100">"Download anyway" ක්ලික් කරන්න</div>
+              <p class="text-slate-400 text-[11px]">Browser එකෙන් warning එක ආවිට බිය නොවී "Download anyway" තෝරන්න.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">2</span>
+            <div>
+              <div class="font-bold text-slate-100">"Allow from this source" On කරන්න</div>
+              <p class="text-slate-400 text-[11px]">Settings වෙත ගොස් Browser එකට APK install කිරීමට අවසර දෙන්න (1st time only).</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">3</span>
+            <div>
+              <div class="font-bold text-slate-100">Install ක්ලික් කරන්න</div>
+              <p class="text-slate-400 text-[11px]">දැන් TukTuk Meter Pro ඔබේ දුරකථනයට ස්ථාපනය වී භාවිතයට සූදානම් වේ.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] flex items-center gap-2.5">
+          <i class="fa-solid fa-shield-check text-base"></i>
+          <span>ඔබට කිසිදු warning එකක් නැතුව App එක පාවිච්චි කිරීමට අවශ්‍ය නම් <strong>Option A (PWA)</strong> තෝරන්න.</span>
+        </div>
+      </div>
+
+      <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3">
+        <button onclick="closeModal('apkSafetyModal')" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer">
+          තේරුම් ගත්තා (Got it)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA Guide Modal -->
+  <div id="pwaGuideModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0e1628] border border-amber-500/40 max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp">
+      <button onclick="closeModal('pwaGuideModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3.5 mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-2xl">
+          <i class="fa-solid fa-mobile-screen"></i>
+        </div>
+        <div>
+          <h3 class="font-display font-black text-xl text-white">Add App to Home Screen</h3>
+          <p class="text-xs text-slate-400">Download නැතුව Phone එකේ App icon එකක් හදාගන්න හැටි</p>
+        </div>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-300 my-5">
+        <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">1</span>
+          <div>
+            <div class="font-bold text-slate-100">Chrome එකෙන් TukTuk Meter Open කරන්න</div>
+            <p class="text-slate-400 text-[11px]">මෙම වෙබ් අඩවියෙන් "Launch Web App" ක්ලික් කරන්න.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">2</span>
+          <div>
+            <div class="font-bold text-slate-100">උඩ කෙළවරේ තිත් 3 (Menu) ඔබන්න</div>
+            <p class="text-slate-400 text-[11px]">Browser එකේ දකුණු පැත්තේ ඉහළ ඇති තිත් 3 ඔබන්න.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">3</span>
+          <div>
+            <div class="font-bold text-slate-100">"Add to Home screen" හෝ "Install app" තෝරන්න</div>
+            <p class="text-slate-400 text-[11px]">දැන් සාමාන්‍ය app එකක් විදියටම Phone එකේ Icon එකක් හැදේවි!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+        <a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs">
+          Open Meter Now
+        </a>
+        <button onclick="closeModal('pwaGuideModal')" class="py-2.5 px-4 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rating Modal -->
+  <div id="rateModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0f172a] border border-amber-500/40 max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp">
+      <button onclick="closeModal('rateModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl mx-auto mb-3">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <h3 class="font-display font-extrabold text-2xl text-white">Rate TukTuk Meter Pro</h3>
+        <p class="text-xs text-slate-400 mt-1">ඔබේ අදහස් Firebase Cloud හරහා ලොව පුරා ඕනෑම අයෙකුට පෙනෙන ලෙස සජීවීව පලවේ.</p>
+      </div>
+
+      <div class="flex justify-center gap-2 mb-6" id="starContainer">
+        <button type="button" onclick="setRating(1)" class="star-btn text-3xl text-amber-400 hover:scale-125 transition-transform"><i class="fa-solid fa-star"></i></button>
+        <button type="button" onclick="setRating(2)" class="star-btn text-3xl text-amber-400 hover:scale-125 transition-transform"><i class="fa-solid fa-star"></i></button>
+        <button type="button" onclick="setRating(3)" class="star-btn text-3xl text-amber-400 hover:scale-125 transition-transform"><i class="fa-solid fa-star"></i></button>
+        <button type="button" onclick="setRating(4)" class="star-btn text-3xl text-amber-400 hover:scale-125 transition-transform"><i class="fa-solid fa-star"></i></button>
+        <button type="button" onclick="setRating(5)" class="star-btn text-3xl text-amber-400 hover:scale-125 transition-transform"><i class="fa-solid fa-star"></i></button>
+      </div>
+
+      <form id="ratingForm" onsubmit="submitReview(event)" class="space-y-4">
+        <input type="hidden" id="selectedStarVal" value="5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">ඔබේ නම (Your Name)</label>
+          <input type="text" id="reviewerName" required placeholder="උදා: මලිත් ප්‍රනාන්දු" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">ප්‍රදේශය / වාහන අංකය (Area / Vehicle No)</label>
+          <input type="text" id="reviewerArea" required placeholder="උදා: Colombo 03 (WP AAQ-XXXX)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-cyan-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">අදහස් (Your Feedback)</label>
+          <textarea id="reviewerFeedback" required rows="3" placeholder="App එක ගැන ඔබේ අදහස ලියන්න..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-cyan-400 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" id="submitReviewBtn" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+          <span>Publish to Cloud Community ⭐</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mother's Assistant Overview Modal -->
+  <div id="motherModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0e1628] border border-pink-500/40 max-w-2xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('motherModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3.5 mb-5">
+        <img src="assets/mother-icon.png" alt="Mother's Assistant" class="w-14 h-14 rounded-2xl object-cover border border-pink-500/40">
+        <div>
+          <h3 class="font-display font-extrabold text-2xl text-white">Mother's Assistant (අම්මගේ අත්උදව්ව)</h3>
+          <p class="text-xs text-pink-400">Official Maternal Health Companion by NexiaPro</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-300 leading-relaxed my-5">
+        <p>
+          Mother's Assistant යනු ශ්‍රී ලාංකික මව්වරුන් සහ පවුල් වෙනුවෙන්ම නිර්මාණය කරන ලද සම්පූර්ණ ඩිජිටල් සෞඛ්‍ය සහකාර මෘදුකාංගයකි.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-white block mb-1">🌸 ගර්භණී සති දින දර්ශනය:</strong>
+            දරුවා කුස තුළ වර්ධනය වන ආකාරය සහ සතියෙන් සතිය මවට දැනෙන වෙනස්කම්.
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-white block mb-1">📖 සායන පොත් කෙටි යෙදුම්:</strong>
+            MOH සායන පොතේ ලියන BP, FHR, Hb වැනි කෙටි යෙදුම් සිංහලෙන් තේරුම් ගන්න.
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-white block mb-1">👶 ලස්සන ළදරු නම් දහස් ගණනක්:</strong>
+            තේරුම සහ අකුරු සහිතව ගැහැණු හා පිරිමි දරුවන්ට සුදුසු නම් තෝරාගැනීම.
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-white block mb-1">💉 එන්නත් සහ බර සටහන්:</strong>
+            දරුවාගේ උපතේ සිට නිවැරදි එන්නත් ලබාදිය යුතු දින සහ MOH බර ප්‍රස්ථාර.
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+        <a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="py-2.5 px-4 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+          <i class="fa-solid fa-download"></i> Download Android APK (4 MB)
+        </a>
+        <button onclick="closeModal('motherModal')" class="py-2.5 px-4 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="app.js"></script>
+</body>
+</html>
