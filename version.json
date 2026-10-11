@@ -1,0 +1,9 @@
+{
+  "appName": "TukTuk Meter Pro",
+  "latestVersion": "2.5",
+  "versionCode": 25,
+  "downloadUrl": "https://nexiapro-official.vercel.app/assets/TukTuk_Meter_Pro_v2.5.apk",
+  "releaseDate": "2026-10-11",
+  "forceUpdate": false,
+  "releaseNotes": "• නවතම TAXI Sticker Studio එක් කර ඇත (300 DPI Print / HD PNG).\n• GPS නිරවද්‍යතාවය සහ Background Tracking වැඩිදියුණු කර ඇත.\n• Night Fare (+15%) සහ Waiting Time ගණනය කිරීම් වඩාත් නිවැරදි කර ඇත."
+}
