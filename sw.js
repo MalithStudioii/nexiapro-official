@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexiapro-store-v3';
+const CACHE_NAME = 'nexiapro-store-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -6,17 +6,11 @@ const ASSETS_TO_CACHE = [
   './app.js',
   './manifest.json',
   './assets/nexiapro-new-logo.png',
-  './assets/mother-icon.png',
   './assets/icon-192.png',
   './assets/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    }).catch(err => console.log('Cache addAll error:', err))
-  );
   self.skipWaiting();
 });
 
@@ -24,21 +18,33 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        keys.map((key) => caches.delete(key))
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  // Let browser handle APK downloads directly
+  // Always let browser fetch APK downloads directly
   if (event.request.url.toLowerCase().endsWith('.apk')) return;
 
+  // Network-First strategy to ensure users always see the latest release
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).catch(() => caches.match('./index.html'));
-    })
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => {
+          return cached || caches.match('./index.html');
+        });
+      })
   );
 });

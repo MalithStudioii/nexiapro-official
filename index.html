@@ -7,6 +7,9 @@
   
   <meta name="description" content="Official NexiaPro App Store. Download TukTuk Meter Pro, Mother's Assistant, and smart mobility tools. Available as Instant PWA or Direct Android APK.">
   <meta name="theme-color" content="#0b0f19">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="assets/nexiapro-new-logo.png">
   <link rel="apple-touch-icon" href="assets/nexiapro-new-logo.png">
   <link rel="manifest" href="manifest.json">
@@ -810,9 +813,9 @@
 
         <div class="pt-6 mt-6 border-t border-slate-800 space-y-2.5">
           <div class="grid grid-cols-2 gap-2">
-            <a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="py-2.5 px-3 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 shadow-md shadow-pink-500/20 transition-all">
-              <i class="fa-brands fa-android"></i>
-              <span>Get APK (4 MB)</span>
+            <a href="https://mothers-assistant-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 shadow-md shadow-pink-500/20 transition-all">
+              <i class="fa-solid fa-globe"></i>
+              <span>Open Web App</span>
             </a>
             <button onclick="openMotherDetailsModal()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-display font-bold text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer">
               <i class="fa-solid fa-circle-info text-pink-400"></i>
@@ -1107,9 +1110,8 @@
           <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Products</div>
           <ul class="space-y-2 text-xs text-slate-400">
             <li><a href="https://tuktuk-meter.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors">TukTuk Meter Pro (Web PWA)</a></li>
-            <li><button onclick="openDownloadModal('tuktuk-meter')" class="hover:text-cyan-400 transition-colors cursor-pointer text-left">Android APK Release</button></li>
-            <li><a href="#mothers-assistant" class="hover:text-pink-400 transition-colors">Mother's Assistant App</a></li>
-            <li><a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="hover:text-pink-400 transition-colors">Download Mother's Asst APK</a></li>
+            <li><a href="assets/TukTuk_Meter_Pro_v2.5.apk" download="TukTuk_Meter_Pro_v2.5.apk" class="hover:text-cyan-400 transition-colors">TukTuk Meter APK (v2.5)</a></li>
+            <li><a href="https://mothers-assistant-app.vercel.app/" target="_blank" class="hover:text-pink-400 transition-colors">Mother's Assistant Web App</a></li>
           </ul>
         </div>
 
@@ -1433,8 +1435,8 @@
       </div>
 
       <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
-        <a href="assets/Mothers_Assistant_v1.0.apk" download="Mothers_Assistant_v1.0.apk" class="py-2.5 px-4 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
-          <i class="fa-solid fa-download"></i> Download Android APK (4 MB)
+        <a href="https://mothers-assistant-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 rounded-xl bg-pink-500 hover:bg-pink-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+          <i class="fa-solid fa-globe"></i> Launch Mother's Assistant Web
         </a>
         <button onclick="closeModal('motherModal')" class="py-2.5 px-4 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs cursor-pointer">
           Close
