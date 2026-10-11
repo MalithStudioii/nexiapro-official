@@ -1232,63 +1232,120 @@
 
   <!-- APK Safety Modal -->
   <div id="apkSafetyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="bg-[#0e1628] border-2 border-amber-500/50 max-w-xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp max-h-[90vh] overflow-y-auto">
-      <button onclick="closeModal('apkSafetyModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer">
+    <div class="bg-[#0e1628] border-2 border-amber-500/50 max-w-2xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp max-h-[92vh] overflow-y-auto">
+      <button onclick="closeModal('apkSafetyModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg cursor-pointer w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center transition-colors">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div class="flex items-center gap-3.5 mb-5">
-        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-2xl">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-2xl shrink-0">
           <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
         <div>
           <h3 class="font-display font-black text-xl text-white">"File might be harmful" Warning?</h3>
-          <p class="text-xs text-amber-300 font-medium">බිය නොවන්න! මෙය සාමාන්‍ය Google ආරක්ෂක පණිවිඩයකි.</p>
+          <p class="text-xs text-amber-300 font-medium">බිය නොවන්න! මෙය සාමාන්‍ය Google ආරක්ෂක පණිවිඩයකි (100% Verified Safe).</p>
         </div>
       </div>
 
-      <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
-        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+      <div class="space-y-5 text-xs text-slate-300 leading-relaxed">
+        <!-- Reason Explanation -->
+        <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
           <strong class="text-white text-sm block mb-1">මේ Warning එක එන්නේ ඇයි?</strong>
-          Google Play Store එකෙන් පිටතින් (Chrome, Browser ආදියෙන්) බාගත කරන ඕනෑම ගොනුවකට Android විසින් මෙම පණිවිඩය ස්වයංක්‍රීයව පෙන්වනු ලබයි. එය ඔබගේ දුරකථනය ආරක්ෂා කිරීමට Google දමා ඇති සාමාන්‍ය ක්‍රමවේදයකි. NexiaPro Apps 100% Virus-free සහ ආරක්ෂිත බව සහතික කෙරේ. ඔබට කිසිදු සැකයකින් තොරව "Download anyway" ක්ලික් කර Install කරගත හැක.
+          Google Play Store එකෙන් පිටතින් (Chrome හෝ වෙනත් Browser මඟින්) බාගත කරන ඕනෑම නිල APK එකකට Android සහ Google Play Protect විසින් මෙම පණිවිඩය ස්වයංක්‍රීයව පෙන්වනු ලබයි. එය ඔබගේ දුරකථනය ආරක්ෂා කිරීමට Google දමා ඇති සාමාන්‍ය ක්‍රියාපටිපාටියකි. NexiaPro TukTuk Meter Pro App එක 100% Virus-free සහ ආරක්ෂිත බව සහතික කෙරේ. පහත පියවර 3 අනුගමනය කර පහසුවෙන්ම Install කරගන්න.
         </div>
 
-        <div class="font-bold text-white text-sm pt-2">ස්ථාපනය කරගන්නා සරල පියවර 3:</div>
+        <div class="font-display font-black text-white text-base pt-1 flex items-center gap-2">
+          <span>📲</span> <span>ස්ථාපනය කරගන්නා සරල පියවර 3 (Step-by-Step Guide):</span>
+        </div>
 
-        <div class="space-y-3">
-          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">1</span>
-            <div>
-              <div class="font-bold text-slate-100">"Download anyway" ක්ලික් කරන්න</div>
-              <p class="text-slate-400 text-[11px]">Browser එකෙන් warning එක ආවිට බිය නොවී "Download anyway" තෝරන්න.</p>
+        <!-- Step-by-Step Visual Cards -->
+        <div class="space-y-4">
+
+          <!-- STEP 1 -->
+          <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition-colors">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-cyan-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-cyan-500/30">1</span>
+              <div>
+                <div class="font-bold text-slate-100 text-sm">"More details ˅" මත ක්ලික් කරන්න</div>
+                <p class="text-slate-400 text-xs mt-0.5">Play Protect වෙතින් "App blocked" ආවිට <strong class="text-amber-300">"Got it" ඔබන්න එපා</strong> (එය එබුවහොත් install වීම නැවතේ). පහත රූපයේ පෙන්වා ඇති පරිදි <strong class="text-cyan-400">"More details ˅"</strong> තෝරන්න.</p>
+              </div>
+            </div>
+
+            <!-- Screenshot Frame 1 -->
+            <div class="rounded-xl border border-slate-700/80 bg-slate-950/80 p-2 overflow-hidden flex flex-col items-center">
+              <div class="w-full flex items-center justify-between px-2 py-1.5 mb-2 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 text-[11px] font-semibold">
+                <span>⚠️ "Got it" ක්ලික් නොකරන්න!</span>
+                <span class="text-cyan-400 font-bold">👉 "More details ˅" ක්ලික් කරන්න</span>
+              </div>
+              <img src="assets/screenshots/install/install-step1-play-protect.png" alt="Step 1: Click More details" class="rounded-lg max-h-60 sm:max-h-72 w-auto object-contain shadow-md">
             </div>
           </div>
 
-          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">2</span>
-            <div>
-              <div class="font-bold text-slate-100">"Allow from this source" On කරන්න</div>
-              <p class="text-slate-400 text-[11px]">Settings වෙත ගොස් Browser එකට APK install කිරීමට අවසර දෙන්න (1st time only).</p>
+          <!-- STEP 2 -->
+          <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition-colors">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-cyan-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-cyan-500/30">2</span>
+              <div>
+                <div class="font-bold text-slate-100 text-sm">"Install anyway" මත ක්ලික් කරන්න</div>
+                <p class="text-slate-400 text-xs mt-0.5">විස්තරය පහළට දිගහැරුණු පසු, එහි ඇති <strong class="text-cyan-400">"Install anyway"</strong> (කෙසේ හෝ ස්ථාපනය කරන්න) යන link එක මත ක්ලික් කරන්න.</p>
+              </div>
+            </div>
+
+            <!-- Screenshot Frame 2 -->
+            <div class="rounded-xl border border-slate-700/80 bg-slate-950/80 p-2 overflow-hidden flex flex-col items-center">
+              <div class="w-full flex items-center justify-between px-2 py-1.5 mb-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-300 text-[11px] font-semibold">
+                <span>🛡️ ආරක්ෂිතව ඉදිරියට යන්න</span>
+                <span class="text-amber-300 font-bold">👉 "Install anyway" ක්ලික් කරන්න</span>
+              </div>
+              <img src="assets/screenshots/install/install-step2-install-anyway.png" alt="Step 2: Click Install anyway" class="rounded-lg max-h-64 sm:max-h-80 w-auto object-contain shadow-md">
             </div>
           </div>
 
-          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span class="w-6 h-6 rounded-full bg-cyan-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">3</span>
-            <div>
-              <div class="font-bold text-slate-100">Install ක්ලික් කරන්න</div>
-              <p class="text-slate-400 text-[11px]">දැන් TukTuk Meter Pro ඔබේ දුරකථනයට ස්ථාපනය වී භාවිතයට සූදානම් වේ.</p>
+          <!-- STEP 3 -->
+          <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition-colors">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-cyan-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-cyan-500/30">3</span>
+              <div>
+                <div class="font-bold text-slate-100 text-sm">"Install" තෝරා ස්ථාපනය අවසන් කරන්න</div>
+                <p class="text-slate-400 text-xs mt-0.5">තිරයේ "Do you want to install this app?" ලෙස පැමිණි විට <strong class="text-emerald-400">"Install"</strong> ක්ලික් කරන්න. සුළු තත්පර කිහිපයකින් TukTuk Meter Pro සාර්ථකව ඔබගේ දුරකථනයට ස්ථාපනය වේ!</p>
+              </div>
             </div>
+
+            <!-- Screenshot Frame 3 -->
+            <div class="rounded-xl border border-slate-700/80 bg-slate-950/80 p-2 overflow-hidden flex flex-col items-center">
+              <div class="w-full flex items-center justify-between px-2 py-1.5 mb-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-300 text-[11px] font-semibold">
+                <span>🚖 අවසන් පියවර</span>
+                <span class="text-emerald-400 font-bold">👉 "Install" ක්ලික් කරන්න</span>
+              </div>
+              <img src="assets/screenshots/install/install-step3-confirm-install.png" alt="Step 3: Click Install" class="rounded-lg max-h-48 sm:max-h-56 w-auto object-contain shadow-md">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Trust & Safety Verification Badge -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/50 to-slate-900 border border-emerald-500/40 text-slate-300 text-xs flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg shrink-0 mt-0.5">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <strong class="text-emerald-300 text-sm block mb-0.5">100% Virus-Free & Production Certified</strong>
+            <span>TukTuk Meter Pro APK ගොනුව අපගේ නිල Production Keystore මඟින් ආරක්ෂිතව Digital Sign කර ඇති අතර, ඔබගේ දුරකථනයට කිසිදු හානියක් සිදු නොවේ.</span>
           </div>
         </div>
 
-        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] flex items-center gap-2.5">
-          <i class="fa-solid fa-shield-check text-base"></i>
-          <span>ඔබට කිසිදු warning එකක් නැතුව App එක පාවිච්චි කිරීමට අවශ්‍ය නම් <strong>Option A (PWA)</strong> තෝරන්න.</span>
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-400 text-[11px] flex items-center gap-2.5">
+          <i class="fa-solid fa-circle-info text-cyan-400"></i>
+          <span>ඔබට කිසිදු Play Protect පණිවිඩයක් නොමැතිව ක්ෂණිකව App එක භාවිතා කිරීමට අවශ්‍ය නම් <strong>Option A (PWA - Web App)</strong> තෝරාගත හැක.</span>
         </div>
       </div>
 
-      <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3">
-        <button onclick="closeModal('apkSafetyModal')" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer">
+      <!-- Modal Footer -->
+      <div class="pt-5 mt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <a href="assets/TukTuk_Meter_Pro_v2.5.apk" download="TukTuk_Meter_Pro_v2.5.apk" class="py-2.5 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-lg shadow-cyan-500/20 transition-all">
+          <i class="fa-solid fa-download"></i> 📥 දැන්ම APK බාගත කරන්න (v2.5)
+        </a>
+        <button onclick="closeModal('apkSafetyModal')" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer transition-colors">
           තේරුම් ගත්තා (Got it)
         </button>
       </div>
