@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexiapro-store-v6';
+const CACHE_NAME = 'nexiapro-store-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
