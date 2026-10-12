@@ -242,10 +242,10 @@ function switchHeroSimApp(appName) {
       phoneScreen.style.background = '#150d18';
     }
     if (fullAppLink) {
-      fullAppLink.href = 'javascript:void(0);';
-      fullAppLink.onclick = () => openMotherDetailsModal();
+      fullAppLink.href = 'https://mothers-assistant-app.vercel.app/';
+      fullAppLink.onclick = null;
     }
-    if (fullAppLabel) fullAppLabel.textContent = 'Overview';
+    if (fullAppLabel) fullAppLabel.textContent = 'Full App';
   }
 }
 
@@ -312,15 +312,38 @@ function toggleHeroSim() {
 }
 
 // ==========================================
-// 4. SCREENSHOT GALLERY & LIGHTBOX
 // ==========================================
-function switchGallery(app) {
+// 4. SCREENSHOT GALLERY & LIGHTBOX SLIDER
+// ==========================================
+const galleryItems = {
+  tuktuk: [
+    { src: 'assets/screenshots/tuktuk/meter-main.webp', caption: '1. Live Meter Display - Live GPS Fare & Speed Screen' },
+    { src: 'assets/screenshots/tuktuk/meter-receipt.webp', caption: '2. Digital Bill & QR - Digital Receipt & LANKAQR Bill' },
+    { src: 'assets/screenshots/tuktuk/meter-settings.webp', caption: '3. Fare Rate Settings - Custom Fare Configuration' },
+    { src: 'assets/screenshots/tuktuk/meter-map.webp', caption: '4. Live Route Map - Live Path & Route Tracing Map' },
+    { src: 'assets/screenshots/tuktuk/meter-history.webp', caption: '5. Daily Trip Summary - Daily Trip History & Summary' }
+  ],
+  mother: [
+    { src: 'assets/screenshots/mother/mother-main.webp', caption: '1. Maternal Dashboard - Daily Maternal Health Dashboard' },
+    { src: 'assets/screenshots/mother/mother-tracker.webp', caption: '2. Pregnancy Tracker - Week by Week Baby Growth Tracker' },
+    { src: 'assets/screenshots/mother/mother-clinic.webp', caption: '3. Clinic Card Terms - MOH Clinic Card Abbreviations Dictionary' },
+    { src: 'assets/screenshots/mother/mother-names.webp', caption: '4. Sinhala Baby Names - Curated Sinhala Baby Names' },
+    { src: 'assets/screenshots/mother/mother-vaccine.webp', caption: '5. Vaccine Calendar - Child MOH Vaccine Calendar' }
+  ]
+};
+
+let currentGalleryCategory = 'tuktuk';
+let currentGalleryIndex = 0;
+
+function switchGallery(tab) {
   const tuktukGrid = document.getElementById('galleryTukTukGrid');
   const motherGrid = document.getElementById('galleryMotherGrid');
   const tabTukTuk = document.getElementById('galleryTabTukTuk');
   const tabMother = document.getElementById('galleryTabMother');
 
-  if (app === 'tuktuk') {
+  currentGalleryCategory = tab;
+
+  if (tab === 'tuktuk') {
     if (tuktukGrid) tuktukGrid.classList.remove('hidden');
     if (motherGrid) motherGrid.classList.add('hidden');
     if (tabTukTuk) tabTukTuk.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all cursor-pointer';
@@ -334,18 +357,78 @@ function switchGallery(app) {
   }
 }
 
+function openGalleryLightbox(category, index) {
+  currentGalleryCategory = category;
+  currentGalleryIndex = index;
+  renderLightboxSlide();
+  openModal('lightboxModal');
+}
+
 function openLightbox(src, caption) {
+  for (const cat of ['tuktuk', 'mother']) {
+    const idx = galleryItems[cat].findIndex(item => item.src === src || item.src.replace('.webp', '.png') === src);
+    if (idx !== -1) {
+      openGalleryLightbox(cat, idx);
+      return;
+    }
+  }
   const modal = document.getElementById('lightboxModal');
   const img = document.getElementById('lightboxImg');
   const cap = document.getElementById('lightboxCaption');
-
   if (modal && img && cap) {
     img.src = src;
     cap.textContent = caption;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
+    openModal('lightboxModal');
   }
+}
+
+function renderLightboxSlide() {
+  const items = galleryItems[currentGalleryCategory] || [];
+  if (!items.length) return;
+  const item = items[currentGalleryIndex];
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  const counter = document.getElementById('lightboxCounter');
+  const badge = document.getElementById('lightboxAppBadge');
+  const dotsContainer = document.getElementById('lightboxDots');
+
+  if (img) {
+    img.style.opacity = '0.3';
+    img.src = item.src;
+    img.onload = () => { img.style.opacity = '1'; };
+    setTimeout(() => { img.style.opacity = '1'; }, 120);
+  }
+  if (cap) cap.textContent = item.caption;
+  if (counter) counter.textContent = `${currentGalleryIndex + 1} / ${items.length}`;
+  if (badge) {
+    if (currentGalleryCategory === 'tuktuk') {
+      badge.textContent = 'TukTuk Meter Pro';
+      badge.className = 'text-[11px] font-bold text-amber-400';
+    } else {
+      badge.textContent = "Mother's Assistant";
+      badge.className = 'text-[11px] font-bold text-pink-400';
+    }
+  }
+
+  if (dotsContainer) {
+    dotsContainer.innerHTML = items.map((_, i) => `
+      <span class="h-1.5 rounded-full transition-all duration-300 ${i === currentGalleryIndex ? (currentGalleryCategory === 'tuktuk' ? 'bg-amber-400 w-4' : 'bg-pink-400 w-4') : 'bg-slate-600 w-1.5'}"></span>
+    `).join('');
+  }
+}
+
+function nextLightboxSlide() {
+  const items = galleryItems[currentGalleryCategory] || [];
+  if (!items.length) return;
+  currentGalleryIndex = (currentGalleryIndex + 1) % items.length;
+  renderLightboxSlide();
+}
+
+function prevLightboxSlide() {
+  const items = galleryItems[currentGalleryCategory] || [];
+  if (!items.length) return;
+  currentGalleryIndex = (currentGalleryIndex - 1 + items.length) % items.length;
+  renderLightboxSlide();
 }
 
 // ==========================================
@@ -716,10 +799,19 @@ window.addEventListener('click', (e) => {
   });
 });
 
-// Close modals on Escape key
+// Close modals on Escape key & Gallery Keyboard Navigation (Arrow Left / Right)
 window.addEventListener('keydown', (e) => {
+  const lightbox = document.getElementById('lightboxModal');
+  const isLightboxOpen = lightbox && !lightbox.classList.contains('hidden');
+
   if (e.key === 'Escape') {
     ['downloadModal', 'apkSafetyModal', 'pwaGuideModal', 'rateModal', 'motherModal', 'lightboxModal'].forEach(closeModal);
+  } else if (isLightboxOpen) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextLightboxSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      prevLightboxSlide();
+    }
   }
 });
 
@@ -774,10 +866,53 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Initialize on DOM load
+// Initialize on DOM load & setup mobile touch swipe
 document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(currentLang);
   initFirebaseReviews();
   setRating(5);
   startAutoRotateTimer();
+
+  // Mobile Touch Swipe Gesture for Lightbox
+  const lightboxModal = document.getElementById('lightboxModal');
+  if (lightboxModal) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lightboxModal.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    lightboxModal.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+        if (diffX < 0) {
+          nextLightboxSlide();
+        } else {
+          prevLightboxSlide();
+        }
+      }
+    }, { passive: true });
+
+    // PC Mouse Wheel Scroll for Lightbox
+    let wheelCooldown = false;
+    lightboxModal.addEventListener('wheel', (e) => {
+      if (lightboxModal.classList.contains('hidden')) return;
+      e.preventDefault();
+      if (wheelCooldown) return;
+
+      if (e.deltaY > 20 || e.deltaX > 20) {
+        nextLightboxSlide();
+      } else if (e.deltaY < -20 || e.deltaX < -20) {
+        prevLightboxSlide();
+      }
+
+      wheelCooldown = true;
+      setTimeout(() => { wheelCooldown = false; }, 260);
+    }, { passive: false });
+  }
 });
